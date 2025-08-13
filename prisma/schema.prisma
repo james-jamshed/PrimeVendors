@@ -9,6 +9,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model images{
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  file_id  String
+  url      String
+  userId   String? @unique @db.ObjectId
+  user     users? @relation(fields: [userId], references: [id])
+}
+
 model users{
-  id
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String @unique
+  avatar   images?
+  password String?
+  following String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
